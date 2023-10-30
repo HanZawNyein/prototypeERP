@@ -96,4 +96,5 @@ class TodoServicer(todo_pb2_grpc.TodoServiceServicer):
             description=todo.description,
             done=todo.done
         ) for todo in todos]
+        logging.info("list todo")
         return todo_pb2.TodoListResponse(todos=todo_list)
