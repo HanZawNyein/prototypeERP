@@ -24,17 +24,19 @@ def list_todo() -> List[TodoInDb]:
 
 
 @router.get("/{todo_id}")
-def get_todo(todo_id: int):
+def get_todo(todo_id: int)->TodoInDb:
     todo_service: TodoService = TodoService()
     return todo_service.read_todo(todo_id=todo_id)
 
 
 @router.put("/{todo_id}")
-def update_todo(todo_id: int, update_data: TodoUpdate):
+def update_todo(todo_id: int, update_data: TodoUpdate)->TodoInDb:
     todo_service: TodoService = TodoService()
     return todo_service.update_todo(todo_id=todo_id, update_data=update_data)
-#
-#
-# @router.delete("/{id}")
-# def delete_todo():
-#     ...
+
+
+@router.delete("/{todo_id}")
+def delete_todo(todo_id: int) -> dict:
+    todo_service: TodoService = TodoService()
+    todo_service.delete_todo(todo_id=todo_id)
+    return {"details": "Todo Delete Successfully."}

@@ -4,6 +4,7 @@ from typing import List
 from fastapi.exceptions import HTTPException
 
 import grpc
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf.json_format import MessageToDict
 
 from .todo_grpc import todo_pb2_grpc
@@ -39,6 +40,13 @@ class TodoRepository:
             # Update the Todo using the gRPC stub
             response = self.stub.Update(request)
             return response
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.NOT_FOUND:
+                raise HTTPException(status_code=404, detail='Todo not found')
+
+    def delete_todo(self, todo_id: int) -> google_dot_protobuf_dot_empty__pb2:
+        try:
+            self.stub.Delete(TodoRequest(id=todo_id))
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.NOT_FOUND:
                 raise HTTPException(status_code=404, detail='Todo not found')
