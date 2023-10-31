@@ -3,12 +3,7 @@ import json
 from typing import List
 
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
-
-from google.protobuf.json_format import MessageToJson
-from starlette.responses import JSONResponse
-
-from ..models.todo import Todo, TodoInDb
+from ..models.todo import Todo, TodoUpdate, TodoInDb
 from ..service.todo import TodoService
 
 logging.basicConfig(level=logging.INFO)
@@ -19,22 +14,25 @@ router = APIRouter()
 @router.post("/")
 def create_todo(todo: Todo) -> TodoInDb:
     todo_service: TodoService = TodoService()
-    return todo_service.add_todo(todo)
+    return todo_service.create_todo(todo)
+
 
 @router.get("/")
 def list_todo() -> List[TodoInDb]:
     todo_service: TodoService = TodoService()
     return todo_service.read_todos()
 
-@router.get("/{id}")
-def get_todo(id:int):
-    todo_service: TodoService = TodoService()
-    return todo_service.read_todo(id=id)
 
-#
-# @router.put("/{id}")
-# def update_todo():
-#     ...
+@router.get("/{todo_id}")
+def get_todo(todo_id: int):
+    todo_service: TodoService = TodoService()
+    return todo_service.read_todo(todo_id=todo_id)
+
+
+@router.put("/{todo_id}")
+def update_todo(todo_id: int, update_data: TodoUpdate):
+    todo_service: TodoService = TodoService()
+    return todo_service.update_todo(todo_id=todo_id, update_data=update_data)
 #
 #
 # @router.delete("/{id}")
