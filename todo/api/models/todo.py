@@ -6,7 +6,8 @@ class TodoBase(BaseModel):
     description: str
     done: bool
 
-class Todo(BaseModel):
+
+class Todo(TodoBase):
     ...
 
 
