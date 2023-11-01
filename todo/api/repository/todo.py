@@ -10,7 +10,7 @@ from google.protobuf.json_format import MessageToDict
 from .todo_grpc import todo_pb2_grpc
 from .todo_grpc import todo_pb2
 
-from ...service.todo_grpc.todo_pb2 import TodoRequest, TodoListResponse, Todo
+from .todo_grpc.todo_pb2 import TodoRequest, TodoListResponse, Todo
 
 
 class TodoRepository:
