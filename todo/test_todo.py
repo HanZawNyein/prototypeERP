@@ -9,9 +9,14 @@ logging.basicConfig(level=logging.INFO)
 
 client = TestClient(app)
 
+def test_health_check():
+    response: Response = client.get('/healthcheck')
+    assert response.status_code==200
+    assert response.json() == {"status":"ok"}
 
-def todo_list():
-    response = client.get('/')
+
+def test_todo_list():
+    response:Response = client.get('/')
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 

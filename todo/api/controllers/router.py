@@ -13,6 +13,16 @@ logging.basicConfig(level=logging.INFO)
 router = APIRouter()
 
 
+
+@router.get("/healthcheck")
+def healthcheck() -> dict:
+    """
+    Check the health of the application.
+    """
+    return {"status": "ok"}
+
+
+
 @router.post("/")
 def create_todo(todo: Todo) -> TodoInDb:
     todo_service: TodoService = TodoService()
@@ -42,11 +52,3 @@ def delete_todo(todo_id: int) -> dict:
     todo_service: TodoService = TodoService()
     todo_service.delete_todo(todo_id=todo_id)
     return {"details": "Todo Delete Successfully."}
-
-
-@router.get("/healthcheck")
-def healthcheck():
-    """
-    Check the health of the application.
-    """
-    return JSONResponse(content={"status": "ok"})
