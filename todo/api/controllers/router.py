@@ -3,6 +3,8 @@ import json
 from typing import List
 
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+
 from ..models.todo import Todo, TodoUpdate, TodoInDb
 from ..service.todo import TodoService
 
@@ -24,13 +26,13 @@ def list_todo() -> List[TodoInDb]:
 
 
 @router.get("/{todo_id}")
-def get_todo(todo_id: int)->TodoInDb:
+def get_todo(todo_id: int) -> TodoInDb:
     todo_service: TodoService = TodoService()
     return todo_service.read_todo(todo_id=todo_id)
 
 
 @router.put("/{todo_id}")
-def update_todo(todo_id: int, update_data: TodoUpdate)->TodoInDb:
+def update_todo(todo_id: int, update_data: TodoUpdate) -> TodoInDb:
     todo_service: TodoService = TodoService()
     return todo_service.update_todo(todo_id=todo_id, update_data=update_data)
 
@@ -40,3 +42,11 @@ def delete_todo(todo_id: int) -> dict:
     todo_service: TodoService = TodoService()
     todo_service.delete_todo(todo_id=todo_id)
     return {"details": "Todo Delete Successfully."}
+
+
+@router.get("/healthcheck")
+def healthcheck():
+    """
+    Check the health of the application.
+    """
+    return JSONResponse(content={"status": "ok"})
